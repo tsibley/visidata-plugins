@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/ajkerrigan/visidata-plugins
+	branch = master
+	commit = 557d99eacb2b708d8664c13ba11807893843a36f
+	parent = 706c5b100604530e03198911ae8490e6401c9288
+	method = merge
+	cmdver = 0.4.1

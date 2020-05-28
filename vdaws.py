@@ -26,7 +26,6 @@ class AWSBatchJobsSheet(visidata.Sheet):
     rowtype = "jobs" # rowdef: Job
     columns = [
         visidata.ColumnAttr("id"),
-        visidata.ColumnAttr("name"),
         visidata.ColumnAttr("queue"),
         visidata.ColumnAttr("status"),
         visidata.ColumnAttr("status_reason"),
@@ -35,6 +34,7 @@ class AWSBatchJobsSheet(visidata.Sheet):
         visidata.ColumnAttr("stopped", type=vddate),
         visidata.ColumnAttr("runtime"),
         visidata.SubColumnAttr("runtime", visidata.ColumnAttr("seconds", type=int), name="runtime_seconds"),
+        visidata.ColumnAttr("name"),
         visidata.ColumnAttr("image"),
         visidata.ColumnAttr("cmd"),
         visidata.ColumnAttr("definition"),

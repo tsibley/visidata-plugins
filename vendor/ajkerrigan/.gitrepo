@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/ajkerrigan/visidata-plugins
 	branch = master
-	commit = 557d99eacb2b708d8664c13ba11807893843a36f
+	commit = 0fd0abcf0fb6c977e13ba5a95bcf91db95808ee0
 	parent = 706c5b100604530e03198911ae8490e6401c9288
 	method = merge
 	cmdver = 0.4.1

@@ -1,5 +1,7 @@
 # VisiData Plugins
 
+![](https://github.com/ajkerrigan/visidata-plugins/workflows/CI%20Tests/badge.svg)
+
 Custom plugins for https://github.com/saulpw/visidata/
 
 * [vds3](#vds3-open-amazon-s3-paths-and-objects): Open Amazon S3 paths and objects
@@ -10,6 +12,16 @@ Custom plugins for https://github.com/saulpw/visidata/
 * [split_navigation](#split_navigation-navigation-keybindings-for-masterdetail-split-views): Navigation keybindings for master/detail split views
 
 ## vds3: Open Amazon S3 paths and objects
+
+### Demo
+
+Browse S3 with an interface like a console-based file explorer:
+
+[![asciicast](https://asciinema.org/a/Cw1njUzYDHvkRrjoKAykYHKe4.svg)](https://asciinema.org/a/Cw1njUzYDHvkRrjoKAykYHKe4)
+
+Use glob-matching to focus your search:
+
+[![asciicast](https://asciinema.org/a/yjPEjpDa5p45dCe7Sad8NYEQd.svg)](https://asciinema.org/a/yjPEjpDa5p45dCe7Sad8NYEQd)
 
 ### Installation
 
@@ -127,7 +139,13 @@ Options can be configured directly in a `~/.visidatarc` file:
 options.vds3_glob = False
 ```
 
-VisiData also supports changing options at runtime at a global level or per-sheet. Jeremy Singer-Vine's [tutorial](https://jsvine.github.io/intro-to-visidata/advanced/configuring-visidata/) is a helpful reference.
+Or specified at runtime:
+
+```bash
+vd --vds3-glob false 's3://my-bucket/file[?].json'
+```
+
+VisiData also supports changing options from the Options sheet inside the application. Jeremy Singer-Vine's [tutorial](https://jsvine.github.io/intro-to-visidata/advanced/configuring-visidata/) is a helpful reference for that.
 
 ### Status
 
@@ -179,7 +197,7 @@ VisiData's [vfake](https://github.com/saulpw/visidata/blob/develop/plugins/vfake
 
 ### Installation
 
-This plugin won't be included in VisiData, and probably shouldn't be added manually as-is either. If you find any pieces useful, transplant them into your own `~/.visidatarc` file or personal plugin collection inside `~/.visidata/plugins`.
+This plugin won't be included in VisiData, and probably shouldn't be added manually as-is either. If you find any pieces of [vfake_extensions.py](plugins/vfake_extensions.py) useful, transplant them into your own `~/.visidatarc` file or personal plugin collection inside `~/.visidata/plugins`.
 
 ### Usage
 
@@ -256,9 +274,15 @@ Once the debugger is active, you can start poking around right away or continue 
 
 VisiData's [split window](https://www.visidata.org/blog/2020/splitwin/) feature enables interesting use cases like displaying a data set and frequency table simultaneously, or a master list of records and a child view of details. In that second case, it can be useful to keep focus in the child/detail view while navigating up and down in the parent view. This little plugin sets up keybindings for that.
 
-### Demo
+### Demos
+
+#### Master/Detail Split Navigation
 
 [![asciicast](https://asciinema.org/a/C18e5aAOwKXTAr4njekNQXWLt.svg)](https://asciinema.org/a/C18e5aAOwKXTAr4njekNQXWLt)
+
+#### Frequency Table "Zoom" Navigation
+
+[![asciicast](https://asciinema.org/a/hS2cSpo7rHI2FN0piscFSlRm5.svg)](https://asciinema.org/a/hS2cSpo7rHI2FN0piscFSlRm5)
 
 ## Contributing
 
@@ -266,6 +290,7 @@ Please open an issue for any bugs, questions or feature requests. Pull requests 
 
 ## Acknowledgements
 
-* VisiData is a slick tool - @saulpw and contributors have done a great job with it.
-* @jsvine's [intro tutorial](https://jsvine.github.io/intro-to-visidata/) and [plugins repo](https://github.com/jsvine/visidata-plugins) are excellent references.
+* VisiData is a slick tool - [saulpw](https://github.com/saulpw), [anjakefala](https://github.com/anjakefala) and other contributors have done a great job with it.
+* [jsvine](https://github.com/jsvine)'s [intro tutorial](https://jsvine.github.io/intro-to-visidata/) and [plugins repo](https://github.com/jsvine/visidata-plugins) are excellent references.
 * Dask's [s3fs](https://github.com/dask/s3fs/) is a great foundation when you need to squint and pretend S3 is a filesystem.
+* Thanks to [geekscrapy](https://github.com/geekscrapy) and [frosencrantz](https://github.com/frosencrantz) for testing and helping to improve these plugins.

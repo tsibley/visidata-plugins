@@ -31,6 +31,12 @@ option(
     'alternate S3 endpoint, used for local testing or alternative S3-compatible services',
     replay=True,
 )
+option(
+    'vds3_version_aware',
+    False,
+    'use object versioning in S3 buckets?',
+    replay=True,
+)
 option('vds3_glob', True, 'enable glob-matching for S3 paths', replay=True)
 
 

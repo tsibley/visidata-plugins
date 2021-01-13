@@ -1,7 +1,14 @@
 import visidata
 import dbm
+import os
+from functools import partial
 
 __version__ = '2020.09.18'
+
+
+DBM_ENCODING = os.environ.get("DBM_ENCODING", "utf-8")
+
+decode = partial(bytes.decode, encoding = DBM_ENCODING, errors = "replace")
 
 
 def open_dbm(path):
@@ -24,7 +31,15 @@ class DBMSheet(visidata.Sheet):
         self.rows = []
 
         for key in self.db.keys():
-            self.rows.append((key, self.db[key]))
+            k, v = key, self.db[key]
+
+            if isinstance(k, bytes):
+                k = decode(k)
+
+            if isinstance(v, bytes):
+                v = decode(v)
+
+            self.rows.append((k, v))
 
 
 visidata.addGlobals({

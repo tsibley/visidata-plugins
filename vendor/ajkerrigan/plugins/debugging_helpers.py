@@ -2,14 +2,14 @@ import os
 import signal
 from functools import wraps
 
-from visidata import BaseSheet, options, vd
+from visidata import BaseSheet, VisiData, vd
 
 vd.option('debugger', '', 'Activate the specified debugger')
 
 SUPPORTED_DEBUGGERS = [
     'remote-pdb',  # dependency: remote-pdb, nice to have: pdbpp
-    'pudb',  # dependency: pudb, nice to have: bpython
-    'web-pdb',  # dependency: web-pdb, nice to have but ugly by default: pdbpp
+    'pudb',        # dependency: pudb, nice to have: bpython
+    'web-pdb',     # dependency: web-pdb, nice to have but ugly by default: pdbpp
 ]
 
 
@@ -19,8 +19,8 @@ def setup_debugger():
     if we set up a debugger, False otherwise.
     '''
 
-    if options.debugger not in SUPPORTED_DEBUGGERS:
-        vd.status(f'Skipping setup for unknown debugger: {options.debugger}')
+    if vd.options.debugger not in SUPPORTED_DEBUGGERS:
+        vd.status(f'Skipping setup for unknown debugger: {vd.options.debugger}')
         return False
 
     debugger_env = {
@@ -33,7 +33,7 @@ def setup_debugger():
         'web-pdb': {'PYTHONBREAKPOINT': 'web_pdb.set_trace',},
     }
 
-    os.environ.update(debugger_env[options.debugger])
+    os.environ.update(debugger_env[vd.options.debugger])
     return True
 
 
@@ -61,11 +61,12 @@ def break_once(obj, func):
 break_once(vd, 'push')
 
 
-def interrupt():
+@VisiData.api
+def interrupt(_):
     os.kill(os.getpid(), signal.SIGINT)
 
 
 # Interrupt execution and return control to the active debugger.
 # ^C is traditional, but it's already used in VisiData for cancelling
 # async threads.
-BaseSheet.addCommand('z^C', 'debug-break', f'{__name__}.interrupt()')
+BaseSheet.addCommand('z^C', 'debug-break', f'vd.interrupt()')

@@ -1,11 +1,26 @@
 import ipaddress
 import re
 from contextlib import suppress
+from string import ascii_uppercase, digits
+
+from visidata import BaseSheet, asyncthread, vd
 
 from faker.providers import BaseProvider
 from faker_cloud import AmazonWebServicesProvider
 
-from visidata import BaseSheet, asyncthread, input, isNullFunc, options, vd
+
+def _isNullFunc():
+    '''
+    isNullFunc is available as a sheet property in newer VisiData releases, but
+    was previously a function in the "visidata" module. Try to use the sheet
+    property, but fall back to support earlier versions.
+    '''
+    try:
+        return vd.sheet.isNullFunc()
+    except AttributeError:
+        import visidata
+
+        return visidata.isNullFunc()
 
 
 class VdCustomProvider(BaseProvider):
@@ -33,7 +48,12 @@ class VdCustomProvider(BaseProvider):
         return self.hexify(f"eni-{'^' * 17}")
 
 
-options.vfake_extra_providers = [AmazonWebServicesProvider, VdCustomProvider]
+try:
+    import plugins.vfake
+
+    vd.options.vfake_extra_providers = [AmazonWebServicesProvider, VdCustomProvider]
+except Exception as err:
+    vd.warning(f'Error importing vfake dependency for vfake_extensions: {err}')
 
 ### Helper condition checker functions for autofake
 
@@ -90,13 +110,14 @@ faketype_mapping = {
 
 
 @asyncthread
-def autofake(cols, rows):
+@BaseSheet.api
+def autofake(sheet, cols, rows):
     '''
     Try to guess an appropriate vfake faketype for a given column and row set.
     If we find a match, run with it. NO REGERTS.
     '''
 
-    isNull = isNullFunc()
+    isNull = _isNullFunc()
     for col in cols:
         faketype = None
         with suppress(StopIteration):
@@ -115,10 +136,8 @@ def autofake(cols, rows):
 BaseSheet.bindkey("zf", "setcol-fake")
 BaseSheet.addCommand(
     "gzf",
-    "setcol-fake-all",
-    'cursorCol.setValuesFromFaker(input("faketype: ", type="faketype"), rows)',
+    'setcol-fake-all',
+    'cursorCol.setValuesFromFaker(vd.input("faketype: ", type="faketype"), rows)',
 )
-BaseSheet.addCommand(
-    'z^F', 'setcol-autofake', f'{__name__}.autofake([cursorCol], rows)'
-)
-BaseSheet.addCommand('gz^F', 'setcols-autofake', f'{__name__}.autofake(columns, rows)')
+BaseSheet.addCommand('z^F', 'setcol-autofake', f'sheet.autofake([cursorCol], rows)')
+BaseSheet.addCommand('gz^F', 'setcols-autofake', f'sheet.autofake(columns, rows)')

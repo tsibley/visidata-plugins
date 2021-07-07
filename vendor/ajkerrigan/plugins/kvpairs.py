@@ -5,8 +5,19 @@ the from_entries and to_entries functions in jq:
 https://stedolan.github.io/jq/manual/#to_entries,from_entries,with_entries
 '''
 
-from visidata import Column, SettableColumn, Sheet, isNullFunc, vd
+from visidata import Column, SettableColumn, Sheet, vd
 
+def _isNullFunc():
+    '''
+    isNullFunc is available as a sheet property in newer VisiData releases, but
+    was previously a function in the "visidata" module. Try to use the sheet
+    property, but fall back to support earlier versions.
+    '''
+    try:
+        return vd.sheet.isNullFunc()
+    except AttributeError:
+        import visidata
+        return visidata.isNullFunc()
 
 @Column.api
 def from_entries(col):
@@ -28,8 +39,9 @@ def from_entries(col):
         vd.fail(f'Columns {col.name} is not a list of Key/Value pairs')
 
     new_idx = sheet.columns.index(col) + 1
-    new_col = sheet.addColumn(SettableColumn(col.name), index=new_idx)
-    isNull = isNullFunc()
+    new_col = SettableColumn(col.name)
+    sheet.addColumn(new_col, index=new_idx)
+    isNull = _isNullFunc()
     for row in rows:
         val = col.getValue(row)
         new_val = {}
@@ -64,8 +76,9 @@ def to_entries(col):
     rows = sheet.rows
 
     new_idx = sheet.columns.index(col) + 1
-    new_col = sheet.addColumn(SettableColumn(col.name), index=new_idx)
-    isNull = isNullFunc()
+    new_col = SettableColumn(col.name)
+    sheet.addColumn(new_col, index=new_idx)
+    isNull = _isNullFunc()
     for r in rows:
         val = col.getValue(r)
         if isNull(val):
@@ -78,5 +91,5 @@ def to_entries(col):
     return new_col
 
 
-Sheet.addCommand("z(", "setcol-fromentries", "cursorCol.from_entries()")
-Sheet.addCommand("z)", "setcol-toentries", "cursorCol.to_entries()")
+Sheet.addCommand("z{", "setcol-fromentries", "cursorCol.from_entries()")
+Sheet.addCommand("z}", "setcol-toentries", "cursorCol.to_entries()")

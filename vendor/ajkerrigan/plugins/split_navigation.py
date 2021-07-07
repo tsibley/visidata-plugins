@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from visidata import ENTER, FreqTableSheet, TableSheet, load_pyobj, vd
+from visidata import ALT, ENTER, FreqTableSheet, PyobjSheet, TableSheet, vd
 
 
 class NoContentPlaceholder:
@@ -54,11 +54,11 @@ def goParentRow(sheet, by):
         return
 
     if not NoContentPlaceholder.emptyRowSheet:
-        NoContentPlaceholder.emptyRowSheet = load_pyobj(
+        NoContentPlaceholder.emptyRowSheet = PyobjSheet(
             'placeholder', NoContentPlaceholder.emptyRowMessage
         )
     if not NoContentPlaceholder.emptyCellSheet:
-        NoContentPlaceholder.emptyCellSheet = load_pyobj(
+        NoContentPlaceholder.emptyCellSheet = PyobjSheet(
             'placeholder', NoContentPlaceholder.emptyCellMessage
         )
 
@@ -104,9 +104,9 @@ def zoomFreqtblRow(sheet, by):
     vd.sheets.insert(1, vs)
 
 
-TableSheet.addCommand('^[j', 'next-parent-row', 'sheet.goParentRow(1)')
-TableSheet.addCommand('^[k', 'prev-parent-row', 'sheet.goParentRow(-1)')
+TableSheet.addCommand(ALT + 'j', 'next-parent-row', 'sheet.goParentRow(1)')
+TableSheet.addCommand(ALT + 'k', 'prev-parent-row', 'sheet.goParentRow(-1)')
 
-FreqTableSheet.addCommand('^[j', 'zoom-next-freqrow', 'sheet.zoomFreqtblRow(1)')
-FreqTableSheet.addCommand('^[k', 'zoom-prev-freqrow', 'sheet.zoomFreqtblRow(-1)')
-FreqTableSheet.addCommand('^[' + ENTER, 'zoom-cur-freqrow', 'sheet.zoomFreqtblRow(0)')
+FreqTableSheet.addCommand(ALT + 'j', 'zoom-next-freqrow', 'sheet.zoomFreqtblRow(1)')
+FreqTableSheet.addCommand(ALT + 'k', 'zoom-prev-freqrow', 'sheet.zoomFreqtblRow(-1)')
+FreqTableSheet.addCommand(ALT + ENTER, 'zoom-cur-freqrow', 'sheet.zoomFreqtblRow(0)')

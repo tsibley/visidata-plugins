@@ -74,8 +74,11 @@ class S3Path(Path):
         Open the current S3 path, decompressing along the way if needed.
         '''
 
+        mode = kwargs.get('mode', 'r')
+
         # Default to text mode unless we have a compressed file
-        mode = 'rb' if self.compression else 'r'
+        if self.compression:
+            mode += 'b'
 
         fp = self.fs.open(self.given, mode=mode, version_id=self.version_id)
 

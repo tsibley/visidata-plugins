@@ -78,7 +78,8 @@ class S3Path(Path):
 
         # Default to text mode unless we have a compressed file
         if self.compression:
-            mode += 'b'
+            mode = mode.replace("t", "")
+            mode += "b"
 
         fp = self.fs.open(self.given, mode=mode, version_id=self.version_id)
 

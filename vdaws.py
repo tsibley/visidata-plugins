@@ -119,7 +119,7 @@ class Job:
         self.image = source["container"]["image"]
         self.cmd = " ".join(source["container"]["command"])
         self.definition = arn_name(source["jobDefinition"])
-        self.cpus = next((int(r["value"]) for r in source["container"]["resourceRequirements"] if r["type"] == "VCPUS"), None)
+        self.cpus = next((int(r["value"]) for r in source["container"]["resourceRequirements"] if r["type"] == "VCPU"), None)
         self.memory_mib = next((int(r["value"]) for r in source["container"]["resourceRequirements"] if r["type"] == "MEMORY"), None)
         self.__source = source
 

@@ -23,7 +23,7 @@ Custom plugins for https://github.com/saulpw/visidata/
 - [kvpairs: Toggle values between lists of Key/Value pairs and dicts](#kvpairs-toggle-values-between-lists-of-keyvalue-pairs-and-dicts)
   - [Overview](#overview)
   - [Installation](#installation-1)
-- [vfake_extensions: Niche addons for vfake](#vfake_extensions-niche-addons-for-vfake)
+- [vfake\_extensions: Niche addons for vfake](#vfake_extensions-niche-addons-for-vfake)
   - [Overview](#overview-1)
   - [Installation](#installation-2)
   - [Usage](#usage-1)
@@ -32,19 +32,19 @@ Custom plugins for https://github.com/saulpw/visidata/
   - [Overview](#overview-2)
   - [Installation](#installation-3)
   - [Usage](#usage-2)
-- [debugging_helpers: Integrate VisiData with debugging packages](#debugging_helpers-integrate-visidata-with-debugging-packages)
+- [debugging\_helpers: Integrate VisiData with debugging packages](#debugging_helpers-integrate-visidata-with-debugging-packages)
   - [Overview](#overview-3)
   - [Workflow](#workflow)
   - [Notes](#notes)
   - [Demo](#demo-1)
-- [parent_navigation: Helpers for navigating a parent sheet from its child](#parent_navigation-helpers-for-navigating-a-parent-sheet-from-its-child)
+- [parent\_navigation: Helpers for navigating a parent sheet from its child](#parent_navigation-helpers-for-navigating-a-parent-sheet-from-its-child)
   - [Overview](#overview-4)
   - [Installation](#installation-4)
   - [Usage](#usage-3)
   - [Demos](#demos)
     - [Parent/Child Sheet Navigation](#parentchild-sheet-navigation)
     - [Frequency Table "Zoom" Navigation](#frequency-table-zoom-navigation)
-- [vd_jmespath: Evaluate JMESPath expressions](#vd_jmespath-evaluate-jmespath-expressions)
+- [vd\_jmespath: Evaluate JMESPath expressions](#vd_jmespath-evaluate-jmespath-expressions)
   - [Overview](#overview-5)
   - [Installation](#installation-5)
   - [Usage](#usage-4)
@@ -53,6 +53,9 @@ Custom plugins for https://github.com/saulpw/visidata/
 ## vds3: Open Amazon S3 paths and objects
 
 ### Demo
+
+**Note:** This plugin's functionality has been migrated into VisiData core. If you're using VisiData v2.12dev or higher,
+you no longer need this plugin!
 
 Browse S3 with an interface like a console-based file explorer:
 
@@ -192,21 +195,6 @@ From an S3 directory listings, select multiple objects and use `&` to join objec
 single sheet. This uses the native VisiData join functionality under the hood, so the available join
 types match those described in VisiData's [join documentation](https://www.visidata.org/docs/join/).
 
-#### Browse previous versions of objects
-
-Open an S3 path:
-
-```
-vd 's3://my-bucket'
-vd 's3://my-bucket/path'
-```
-
-Hit `^V` to toggle support for S3 versioning. When enabled, there will be an additional `Latest?` column along with a `Version ID` column that is hidden by default. Previous versions can be opened with `Enter` or `g+Enter` as usual.
-
-#### Join/combine objects
-
-From an S3 directory listings, select multiple objects and use `&` to join object contents into a single sheet. This uses the native VisiData join functionality under the hood, so the available join types match those described in VisiData's [join documentation](https://www.visidata.org/docs/join/).
-
 ### Configuration
 
 This plugin's behavior can be tweaked with the following options:
@@ -225,16 +213,6 @@ you have a local [moto server](https://github.com/spulec/moto#stand-alone-server
 [localstack](https://github.com/localstack/localstack) S3 service running on a specific port. For
 any other AWS profile it falls back to the AWS default endpoint. A block like this can help you
 naturally switch between endpoints based on context, rather than requiring command line switches.
-
-```python
-profile_endpoint_map = {
-    'localstack': 'http://localhost:4572',
-    'moto': 'http://localhost:3000',
-}
-options.vds3_endpoint = profile_endpoint_map.get(os.environ.get('AWS_PROFILE'))
-```
-
-**Note:** This sample `~/.visidatarc` snippet defines local S3 endpoints to be used when specific AWS profiles are active. It assumes that if the `moto` or `localstack` AWS CLI profiles are active, you have a local [moto server](https://github.com/spulec/moto#stand-alone-server-mode) or [localstack](https://github.com/localstack/localstack) S3 service running on a specific port. For any other AWS profile it falls back to the AWS default endpoint. A block like this can help you naturally switch between endpoints based on context, rather than requiring command line switches.
 
 ```python
 profile_endpoint_map = {
@@ -515,7 +493,7 @@ from visidata import BaseSheet, vd
 
 # Use space as a prefix key rather than to execute a command by name.
 vd.bindkeys[':'] = {'BaseSheet': 'exec-longname'}
-vd.allPrefixes.append(' ')
+vd.allPrefixes.append('Space')
 
 # Define JMESPath commands by adding a custom prefix to the built-in
 # addcol/select/unselect commands.

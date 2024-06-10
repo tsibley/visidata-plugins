@@ -1,4 +1,6 @@
 from functools import partial
+from hashlib import sha1
+
 import jmespath
 from visidata import BaseSheet, ExprColumn, vd
 
